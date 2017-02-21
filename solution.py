@@ -56,6 +56,7 @@ column_units = [cross(rows, c) for c in cols]
 square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
 diag1 = []
 diag2 = []
+#Create the lists for each diagonals to implement the costraint for a diagonal sudoku puzzle
 for s,t in zip(rows,cols):
     diag1.append(s+t)
 for s,t in zip(rows[::-1],cols):
@@ -78,6 +79,8 @@ def grid_values(grid):
     layout = cross(rows,cols)
     all_digits = '123456789'
     d = {}
+    #Insert all digits for square entries that are empty and insert the square value
+    # if found.  Populate values in dictionary d
     for i,entry in enumerate(grid):
         if entry == '.':
             d[layout[i]] = all_digits
@@ -105,7 +108,8 @@ def eliminate(values):
     for key in values.keys():
         value = values[key]
         if len(value) == 1:
-            # We have a box with a single entry.  Check it's peers to see if that value is present in it's string
+            # We have a box with a single entry.  
+            #Check it's peers to see if that value is present in it's string
             for p in peers[key]:
                 peer_value = values[p]
                 if peer_value.find(value) != -1:
@@ -191,7 +195,11 @@ def solve(grid):
     Returns:
         The dictionary representation of the final sudoku grid. False if no solution exists.
     """
+    #Populate grid representtion into a dictionary
     grid_rep = grid_values(grid)
+    
+    #Execute the Constraint propragation and 
+    #search techniques to solve the sudoku puzzle
     attempt = search(grid_rep)
     
     if attempt:
